@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+class Cell {
+    double size;
+    int divisions;
+
+    public Cell(double size) {
+        this.size = size;
+        this.divisions = 0;
+    }
+
+    public void grow() {
+        size += 0.1; // Simple growth rate
+    }
+
+    public boolean canDivide() {
+        return size >= 2.0; // Simple division threshold
+    }
+
+    public List<Cell> divide() {
+        divisions++;
+        size /= 2;
+        List<Cell> offspring = new ArrayList<>();
+        offspring.add(new Cell(size));
+        offspring.add(new Cell(size));
+        return offspring;
+    }
+}
+
+public class CellGrowthSimulation {
+    public static void main(String[] args) {
+        int numCells = 10;
+        int simulationSteps = 100;
+
+        List<Cell> cells = new ArrayList<>();
+        for (int i = 0; i < numCells; i++) {
+            cells.add(new Cell(0.5)); // Initial cell size
+        }
+
+        Random random = new Random();
+
+        for (int step = 1; step <= simulationSteps; step++) {
+            System.out.println("Step " + step);
+            for (Cell cell : cells) {
+                cell.grow();
+                if (cell.canDivide()) {
+                    List<Cell> offspring = cell.divide();
+                    cells.addAll(offspring);
+                }
+            }
+            System.out.println("Total Cells: " + cells.size());
+        }
+    }
+}
